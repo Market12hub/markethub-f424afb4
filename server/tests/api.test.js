@@ -5,6 +5,7 @@ import request from 'supertest';
 
 // Tests use their own database so your real data is never touched
 process.env.DB_NAME = 'markethub_test';
+delete process.env.DATABASE_URL;
 // Tests always run with simulated payments, whatever your .env says
 process.env.PAYMENT_MODE = 'simulated';
 
