@@ -4,6 +4,9 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setToken = (token) =>
   token ? localStorage.setItem(TOKEN_KEY, token) : localStorage.removeItem(TOKEN_KEY);
 
+// Get the backend URL from the Vercel environment variable
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 // One helper for every API call: adds the token and turns errors into exceptions
 export async function api(path, { method = 'GET', body } = {}) {
   const headers = {};
@@ -11,7 +14,8 @@ export async function api(path, { method = 'GET', body } = {}) {
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`/api${path}`, {
+  // FIX: Added API_BASE here so it goes to Render, not Vercel
+  const res = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
